@@ -5,15 +5,13 @@ namespace mrc{
 
     void nullCallback(pulseArgs) {};
 
-    advanced_pulse::advanced_pulse(bool *watchVariable, uint16_t debounceTime, bool isMicro, void(*onHigh)(pulseArgs) = nullCallback, void(*onLow)(pulseArgs) = nullCallback, void(*onChange)(pulseArgs) = nullCallback){
+    advanced_pulse::advanced_pulse(bool *watchVariable, uint16_t debounceTime, bool isMicro/*, void(*onHigh)(pulseArgs) = nullCallback, void(*onLow)(pulseArgs) = nullCallback, void(*onChange)(pulseArgs) = nullCallback*/){
         this->data.watchVariable = watchVariable;
-        this->buttonPin = buttonPin;
         this->debounceTime = debounceTime;
         this->isMicro = isMicro;
-        this->onHigh = onHigh;
-        this->onLow = onLow;
-        this->onChange = onChange;
-        
+        //this->onHigh = onHigh;
+        //this->onLow = onLow;
+        //this->onChange = onChange;
     }
 
 
@@ -21,7 +19,7 @@ namespace mrc{
         unsigned long curTime = isMicro ? micros() : millis();
         data.pulseIn = false;
         data.pulseOut = false;
-        if(digitalRead(buttonPin)){
+        if(*data.watchVariable){
             if((data.outTimestamp + debounceTime) < curTime) data.triggerOut = false;
             if(!data.triggerIn){
                 data.triggerIn = true;
@@ -37,7 +35,7 @@ namespace mrc{
                 data.triggerOut = true;
                 data.pulseOut = true;
                 data.outTimestamp = curTime;
-                data.highTime = data.outTimestamp - data.inTimestamp;
+                data.lowTime = data.outTimestamp - data.inTimestamp;
                 onLow(data);
                 onChange(data);
             }
