@@ -16,7 +16,7 @@ void onHigh_test(mrc::pulseArgs data){
     Serial.println(serial_buffer);
 }
 
-mrc::advanced_pulse pulse(&test_variable, 10, false);
+mrc::advanced_pulse pulse(10, false);
 
 void setup(){
 
@@ -38,7 +38,6 @@ void loop(){
         if(l < test_value) digitalWrite(led_pins[l], HIGH);
     }
 
-    test_variable = digitalRead(TEST_BTN);
     //advanced_pulse driver polling
-    pulse.poll();
+    pulse.poll(digitalRead(TEST_BTN));
 }

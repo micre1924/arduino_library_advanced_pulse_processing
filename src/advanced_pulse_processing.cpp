@@ -5,7 +5,7 @@ namespace mrc{
 
     void nullCallback(pulseArgs) {};
 
-    advanced_pulse::advanced_pulse(bool *watchVariable, uint16_t debounceTime, bool isMicro/*, void(*onHigh)(pulseArgs) = nullCallback, void(*onLow)(pulseArgs) = nullCallback, void(*onChange)(pulseArgs) = nullCallback*/){
+    advanced_pulse::advanced_pulse(uint16_t debounceTime, bool isMicro, bool *watchVariable){
         this->data.watchVariable = watchVariable;
         this->debounceTime = debounceTime;
         this->isMicro = isMicro;
@@ -14,12 +14,17 @@ namespace mrc{
         //this->onChange = onChange;
     }
 
-
+    //poll from watchVariable
     void advanced_pulse::poll(){
+        advanced_pulse::poll(*advanced_pulse::data.watchVariable);
+    }
+
+    //poll from Input
+    void advanced_pulse::poll(bool input){
         unsigned long curTime = isMicro ? micros() : millis();
         data.pulseIn = false;
         data.pulseOut = false;
-        if(*data.watchVariable){
+        if(input){
             if((data.outTimestamp + debounceTime) < curTime) data.triggerOut = false;
             if(!data.triggerIn){
                 data.triggerIn = true;

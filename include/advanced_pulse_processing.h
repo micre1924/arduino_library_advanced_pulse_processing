@@ -23,6 +23,7 @@ namespace mrc{
     };
 
     void nullCallback(pulseArgs);
+    static bool nullWatchVariable;
 
     class advanced_pulse {
     public:
@@ -34,15 +35,13 @@ namespace mrc{
         void(*onChange)(pulseArgs) = nullCallback;
 
         /**
-         * @param watchVariable input variable to watch
          * @param debounceTime the time to wait to accept new change of state
          * @param isMicro when true micros() is used as a time basis, millis() otherwise (from Arduino.h)
-         * @param onLow the callback for the variable-is-low-event with pulseArgs
-         * @param onHigh the callback for the variable-is-high-event with pulseArgs
-         * @param onChange the callback for the variable-changed-event with pulseArgs
+         * @param watchVariable input variable to watch
          * */
-        advanced_pulse(bool *watchVariable, uint16_t debounceTime, bool isMicro/*, void(*onHigh)(pulseArgs) = nullCallback, void(*onLow)(pulseArgs) = nullCallback, void(*onChange)(pulseArgs) = nullCallback*/);
+        advanced_pulse(uint16_t debounceTime, bool isMicro, bool *watchVariable = &nullWatchVariable);
 
         void poll();
+        void poll(bool input);
     };
 }
