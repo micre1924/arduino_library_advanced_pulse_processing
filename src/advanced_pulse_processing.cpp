@@ -25,7 +25,7 @@ namespace mrc{
                 data.triggerIn = true;
                 data.pulseIn = true;
                 data.inTimestamp = curTime;
-                data.highTime = data.inTimestamp - data.outTimestamp;
+                data.lowTime = data.inTimestamp - data.outTimestamp;
                 onHigh(data);
                 onChange(data);
             }
@@ -35,7 +35,7 @@ namespace mrc{
                 data.triggerOut = true;
                 data.pulseOut = true;
                 data.outTimestamp = curTime;
-                data.lowTime = data.outTimestamp - data.inTimestamp;
+                data.highTime = data.outTimestamp - data.inTimestamp;
                 onLow(data);
                 onChange(data);
             }

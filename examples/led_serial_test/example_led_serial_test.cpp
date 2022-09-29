@@ -12,11 +12,11 @@ char serial_buffer[100];
 void onHigh_test(mrc::pulseArgs data){
     if(test_value < 10) test_value++; 
     else test_value = 0;
-    sprintf(serial_buffer, "HIGH: %d, LOW: %d", data.highTime, data.lowTime);
+    sprintf(serial_buffer, "HIGH: %d, LOW: %d", (int)data.highTime, (int)data.lowTime);
     Serial.println(serial_buffer);
 }
 
-mrc::advanced_pulse pulse(&test_variable, 100, false);
+mrc::advanced_pulse pulse(&test_variable, 10, false);
 
 void setup(){
 
